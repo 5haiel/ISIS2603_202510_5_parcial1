@@ -70,7 +70,10 @@ public class RecordServiceTest {
     void testCreateRecord() {
         // TODO
         RecordEntity record = factory.manufacturePojo(RecordEntity.class);
-        
+
+        // try{
+        //     RecordEntity storedEntity = recordService.createRecord(login, courseCode, null, courseCode)
+        // } catch (){}
     }
 
     /**
