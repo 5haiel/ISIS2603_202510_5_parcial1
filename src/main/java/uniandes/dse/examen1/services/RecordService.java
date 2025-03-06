@@ -1,7 +1,6 @@
 package uniandes.dse.examen1.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +42,13 @@ public class RecordService {
 
         if (grade < 1.5 || grade > 5.0){
             throw new InvalidRecordException("La nota debe ser un número entre 1.5 y 5.0");
+        }
+
+        List<RecordEntity> records = student.getRecords();
+        for (RecordEntity record : records){
+            if (record.getFinalGrade() >= 3.0){
+                throw new InvalidRecordException("El estudiante ya aprobó este curso con la nota: " + record.getFinalGrade());
+            }
         }
 
         RecordEntity record = new RecordEntity();
