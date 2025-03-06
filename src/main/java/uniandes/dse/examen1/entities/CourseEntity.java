@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -40,4 +42,12 @@ public class CourseEntity {
      * No student should appear more than once in this list
      */
     // TODO
+    @PodamExclude
+    @ManyToMany
+    @JoinTable(
+        name = "students_courses",
+        joinColumns = @JoinColumn(name = "course_id"),
+        inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
+    private List<StudentEntity> students = new ArrayList<>();
 }

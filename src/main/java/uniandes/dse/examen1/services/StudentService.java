@@ -19,5 +19,18 @@ public class StudentService {
 
     public StudentEntity createStudent(StudentEntity newStudent) throws RepeatedStudentException {
         // TODO
+        StudentEntity exists = studentRepository.findByLogin(newStudent.getLogin()).orElse(null);
+        if (exists != null){
+            throw new RepeatedStudentException(newStudent.getLogin());
+        }
+
+        StudentEntity student = new StudentEntity();
+        newStudent.setName(newStudent.getName());
+        newStudent.setId(newStudent.getId());
+        newStudent.setLogin(newStudent.getLogin());
+        newStudent.setCourses(newStudent.getCourses());
+        newStudent.setRecords(newStudent.getRecords());
+
+        return studentRepository.save(student);
     }
 }

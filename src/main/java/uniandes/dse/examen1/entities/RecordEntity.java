@@ -28,5 +28,8 @@ public class RecordEntity {
     private String semester;
 
     // TODO
+    @PodamExclude
+    @ManyToOne
+    private StudentEntity student;
 
 }

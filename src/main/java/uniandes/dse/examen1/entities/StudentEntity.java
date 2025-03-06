@@ -37,10 +37,16 @@ public class StudentEntity {
      * student in the course.
      */
     // TODO
+    @PodamExclude
+    @OneToMany(mappedBy = "student")
+    private List<RecordEntity> records = new ArrayList<>();
 
     /**
      * A list of all the courses that the student has ever taken. No course should
      * appear more than once in this list.
      */
     // TODO
+    @PodamExclude
+    @ManyToMany(mappedBy = "students")
+    private List<CourseEntity> courses = new ArrayList<>();
 }
