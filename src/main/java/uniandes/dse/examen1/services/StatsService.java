@@ -27,7 +27,7 @@ public class StatsService {
     RecordRepository inscripcionRepository;
 
     public Double calculateStudentAverage(String login) {
-        // TODO
+
         StudentEntity student = estudianteRepository.findByLogin(login).orElse(null);
         if (student == null){
             throw new IllegalArgumentException("No existe el estudiante con el login: " + login);
@@ -47,7 +47,6 @@ public class StatsService {
     }
 
     public Double calculateCourseAverage(String courseCode) {
-        // TODO
         CourseEntity course = cursoRepository.findByCourseCode(courseCode).orElse(null);
         if (course == null){
             throw new IllegalArgumentException("No existe el curso con el código: " + courseCode);

@@ -16,7 +16,6 @@ public class StudentService {
     StudentRepository studentRepository;
 
     public StudentEntity createStudent(StudentEntity newStudent) throws RepeatedStudentException {
-        // TODO
         StudentEntity exists = studentRepository.findByLogin(newStudent.getLogin()).orElse(null);
         if (exists != null){
             throw new RepeatedStudentException(newStudent.getLogin());

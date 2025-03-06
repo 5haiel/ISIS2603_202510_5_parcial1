@@ -69,6 +69,8 @@ public class RecordServiceTest {
     @Test
     void testCreateRecord() {
         // TODO
+        RecordEntity record = factory.manufacturePojo(RecordEntity.class);
+        
     }
 
     /**

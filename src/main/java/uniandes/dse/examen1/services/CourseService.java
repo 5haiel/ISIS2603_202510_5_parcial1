@@ -16,7 +16,6 @@ public class CourseService {
     CourseRepository courseRepository;
 
     public CourseEntity createCourse(CourseEntity newCourse) throws RepeatedCourseException {
-        // TODO
         CourseEntity exists = courseRepository.findByCourseCode(newCourse.getCourseCode()).orElse(null);
         if (exists != null){
             throw new RepeatedCourseException(newCourse.getCourseCode());

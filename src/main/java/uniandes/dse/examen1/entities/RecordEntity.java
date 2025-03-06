@@ -29,7 +29,6 @@ public class RecordEntity {
 
     private CourseEntity course;
 
-    // TODO
     @PodamExclude
     @ManyToOne
     private StudentEntity student;

@@ -29,7 +29,6 @@ public class RecordService {
 
     public RecordEntity createRecord(String loginStudent, String courseCode, Double grade, String semester)
             throws InvalidRecordException {
-        // TODO
         StudentEntity student = studentRepository.findByLogin(loginStudent).orElse(null);
         if (student == null){
             throw new InvalidRecordException("No existe un estudiante con el login: " + loginStudent);
