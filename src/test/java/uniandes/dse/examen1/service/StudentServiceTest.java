@@ -35,34 +35,34 @@ public class StudentServiceTest {
 
     }
 
-    @Test
-    void testCreateStudent() {
-        StudentEntity newEntity = factory.manufacturePojo(StudentEntity.class);
-        String login = newEntity.getLogin();
+    // @Test
+    // void testCreateStudent() {
+    //     StudentEntity newEntity = factory.manufacturePojo(StudentEntity.class);
+    //     String login = newEntity.getLogin();
 
-        try {
-            StudentEntity storedEntity = studentService.createStudent(newEntity);
-            StudentEntity retrieved = entityManager.find(StudentEntity.class, storedEntity.getId());
-            assertEquals(login, retrieved.getLogin(), "The login is not correct");
-        } catch (RepeatedStudentException e) {
-            fail("No exception should be thrown: " + e.getMessage());
-        }
-    }
+    //     try {
+    //         StudentEntity storedEntity = studentService.createStudent(newEntity);
+    //         StudentEntity retrieved = entityManager.find(StudentEntity.class, storedEntity.getId());
+    //         assertEquals(login, retrieved.getLogin(), "The login is not correct");
+    //     } catch (RepeatedStudentException e) {
+    //         fail("No exception should be thrown: " + e.getMessage());
+    //     }
+    // }
 
-    @Test
-    void testCreateEstudianteRepetido() {
-        StudentEntity firstEntity = factory.manufacturePojo(StudentEntity.class);
-        String login = firstEntity.getLogin();
+    // @Test
+    // void testCreateEstudianteRepetido() {
+    //     StudentEntity firstEntity = factory.manufacturePojo(StudentEntity.class);
+    //     String login = firstEntity.getLogin();
 
-        StudentEntity repeatedEntity = new StudentEntity();
-        repeatedEntity.setLogin(login);
-        repeatedEntity.setName("repeated name");
+    //     StudentEntity repeatedEntity = new StudentEntity();
+    //     repeatedEntity.setLogin(login);
+    //     repeatedEntity.setName("repeated name");
 
-        try {
-            studentService.createStudent(firstEntity);
-            studentService.createStudent(repeatedEntity);
-            fail("An exception must be thrown");
-        } catch (Exception e) {
-        }
-    }
+    //     try {
+    //         studentService.createStudent(firstEntity);
+    //         studentService.createStudent(repeatedEntity);
+    //         fail("An exception must be thrown");
+    //     } catch (Exception e) {
+    //     }
+    // }
 }

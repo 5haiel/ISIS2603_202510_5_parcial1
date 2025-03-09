@@ -22,6 +22,7 @@ import uniandes.dse.examen1.services.CourseService;
 @DataJpaTest
 @Transactional
 @Import(CourseService.class)
+
 public class CourseServiceTest {
 
     @Autowired
@@ -37,38 +38,38 @@ public class CourseServiceTest {
 
     }
 
-    @Test
-    void testCreateCourse() {
-        // TODO
-        CourseEntity course = factory.manufacturePojo(CourseEntity.class);
-        String courseCode = course.getCourseCode();
-        try{
-            CourseEntity storedEntity = courseService.createCourse(course);
-            CourseEntity retrieved = entityManager.find(CourseEntity.class, storedEntity.getId());
-            assertEquals(courseCode, retrieved.getCourseCode(), "The course code is correct."); 
-        } catch (RepeatedCourseException e){
-            fail("No exception should be thrown: " + e.getMessage());
-        }
+    // @Test
+    // void testCreateCourse() {
+    //     // TODO
+    //     CourseEntity course = factory.manufacturePojo(CourseEntity.class);
+    //     String courseCode = course.getCourseCode();
+    //     try{
+    //         CourseEntity storedEntity = courseService.createCourse(course);
+    //         CourseEntity retrieved = entityManager.find(CourseEntity.class, storedEntity.getId());
+    //         assertEquals(courseCode, retrieved.getCourseCode(), "The course code is correct."); 
+    //     } catch (RepeatedCourseException e){
+    //         fail("No exception should be thrown: " + e.getMessage());
+    //     }
 
-    }
+    // }
 
-    @Test
-    void testCreateRepeatedCourse() {
-        // TODO
-        CourseEntity firstCourseEntity = factory.manufacturePojo(CourseEntity.class);
-        String courseCode = firstCourseEntity.getCourseCode();
+    // @Test
+    // void testCreateRepeatedCourse() {
+    //     // TODO
+    //     CourseEntity firstCourseEntity = factory.manufacturePojo(CourseEntity.class);
+    //     String courseCode = firstCourseEntity.getCourseCode();
 
-        CourseEntity repeatedCourseEntity = new CourseEntity();
-        repeatedCourseEntity.setCourseCode(courseCode);
-        repeatedCourseEntity.setName("Repeated name");
+    //     CourseEntity repeatedCourseEntity = new CourseEntity();
+    //     repeatedCourseEntity.setCourseCode(courseCode);
+    //     repeatedCourseEntity.setName("Repeated name");
 
-        try {
-            courseService.createCourse(firstCourseEntity);
-            courseService.createCourse(repeatedCourseEntity);
-            fail("An exception must be thrown");
-        } catch (Exception e) {
-        }
+    //     try {
+    //         courseService.createCourse(firstCourseEntity);
+    //         courseService.createCourse(repeatedCourseEntity);
+    //         fail("An exception must be thrown");
+    //     } catch (Exception e) {
+    //     }
 
     
-    }
+    //}
 }

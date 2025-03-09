@@ -27,6 +27,8 @@ public class RecordEntity {
      */
     private String semester;
 
+    @PodamExclude
+    @ManyToOne
     private CourseEntity course;
 
     @PodamExclude

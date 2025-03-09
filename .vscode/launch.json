@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-Examen1Application<examen1>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "uniandes.dse.examen1.Examen1Application",
+            "projectName": "examen1",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

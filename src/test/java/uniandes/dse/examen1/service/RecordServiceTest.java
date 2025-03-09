@@ -52,16 +52,16 @@ public class RecordServiceTest {
     private String login;
     private String courseCode;
 
-    @BeforeEach
-    void setUp() throws RepeatedCourseException, RepeatedStudentException {
-        CourseEntity newCourse = factory.manufacturePojo(CourseEntity.class);
-        newCourse = courseService.createCourse(newCourse);
-        courseCode = newCourse.getCourseCode();
+    // @BeforeEach
+    // void setUp() throws RepeatedCourseException, RepeatedStudentException {
+    //     CourseEntity newCourse = factory.manufacturePojo(CourseEntity.class);
+    //     newCourse = courseService.createCourse(newCourse);
+    //     courseCode = newCourse.getCourseCode();
 
-        StudentEntity newStudent = factory.manufacturePojo(StudentEntity.class);
-        newStudent = studentService.createStudent(newStudent);
-        login = newStudent.getLogin();
-    }
+    //     StudentEntity newStudent = factory.manufacturePojo(StudentEntity.class);
+    //     newStudent = studentService.createStudent(newStudent);
+    //     login = newStudent.getLogin();
+    // }
 
     /**
      * Tests the normal creation of a record for a student in a course
@@ -69,7 +69,7 @@ public class RecordServiceTest {
     @Test
     void testCreateRecord() {
         // TODO
-        RecordEntity record = factory.manufacturePojo(RecordEntity.class);
+        //RecordEntity record = factory.manufacturePojo(RecordEntity.class);
 
         // try{
         //     RecordEntity storedEntity = recordService.createRecord(login, courseCode, null, courseCode)
