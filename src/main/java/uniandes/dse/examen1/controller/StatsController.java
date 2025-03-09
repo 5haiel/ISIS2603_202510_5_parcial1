@@ -28,7 +28,7 @@ public class StatsController {
         studentAverageDTO.setLogin(login);
         studentAverageDTO.setAverage(average);
         return studentAverageDTO;
-    }
+    } 
 
     @GetMapping("/course/{courseCode}")
     @ResponseStatus(HttpStatus.OK)
