@@ -16,15 +16,13 @@ public class CourseService {
     CourseRepository courseRepository;
 
     public CourseEntity createCourse(CourseEntity newCourse) throws RepeatedCourseException {
-        CourseEntity exists = courseRepository.findByCourseCode(newCourse.getCourseCode()).orElse(null);
-        if (exists != null){
+        if (courseRepository.findByCourseCode(newCourse.getCourseCode()).isPresent()){
             throw new RepeatedCourseException(newCourse.getCourseCode());
         }
 
         CourseEntity course = new CourseEntity();
         course.setCourseCode(newCourse.getCourseCode());
         course.setCredits(newCourse.getCredits());
-        course.setId(newCourse.getId());
         course.setName(newCourse.getName());
 
         return courseRepository.save(course);

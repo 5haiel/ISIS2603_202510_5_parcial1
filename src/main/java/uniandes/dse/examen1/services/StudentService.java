@@ -16,17 +16,13 @@ public class StudentService {
     StudentRepository studentRepository;
 
     public StudentEntity createStudent(StudentEntity newStudent) throws RepeatedStudentException {
-        StudentEntity exists = studentRepository.findByLogin(newStudent.getLogin()).orElse(null);
-        if (exists != null){
+        if (studentRepository.findByLogin(newStudent.getLogin()).isPresent()){
             throw new RepeatedStudentException(newStudent.getLogin());
         }
 
         StudentEntity student = new StudentEntity();
-        newStudent.setName(newStudent.getName());
-        newStudent.setId(newStudent.getId());
-        newStudent.setLogin(newStudent.getLogin());
-        newStudent.setCourses(newStudent.getCourses());
-        newStudent.setRecords(newStudent.getRecords());
+        student.setName(newStudent.getName());
+        student.setLogin(newStudent.getLogin());
 
         return studentRepository.save(student);
     }
