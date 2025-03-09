@@ -45,8 +45,11 @@ public class RecordService {
 
         List<RecordEntity> records = student.getRecords();
         for (RecordEntity record : records){
-            if (record.getFinalGrade() >= 3.0){
+            if (record.getFinalGrade() >= 3.0 && record.getCourse().getCourseCode().equals(courseCode)){
                 throw new InvalidRecordException("El estudiante ya aprobó este curso con la nota: " + record.getFinalGrade());
+            }
+            else if (record.getCourse().getCourseCode().equals(courseCode)){
+                throw new InvalidRecordException("El estudiante ya está inscrito en este curso");
             }
         }
 
@@ -54,7 +57,18 @@ public class RecordService {
         record.setFinalGrade(grade);
         record.setSemester(semester);
         record.setStudent(student);
+        record.setCourse(course);
         
+        if (!student.getCourses().contains(course)) {
+            student.getCourses().add(course);
+            studentRepository.save(student); 
+        }
+        
+        if (!course.getStudents().contains(student)) {
+            course.getStudents().add(student);
+            courseRepository.save(course); 
+        }
+
         return recordRepository.save(record);
     }
 }

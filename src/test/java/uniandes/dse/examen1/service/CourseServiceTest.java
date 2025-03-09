@@ -14,8 +14,6 @@ import jakarta.transaction.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 import uniandes.dse.examen1.entities.CourseEntity;
-import uniandes.dse.examen1.entities.RecordEntity;
-import uniandes.dse.examen1.entities.StudentEntity;
 import uniandes.dse.examen1.exceptions.RepeatedCourseException;
 import uniandes.dse.examen1.services.CourseService;
 
@@ -40,7 +38,6 @@ public class CourseServiceTest {
 
     @Test
     void testCreateCourse() {
-        // TODO
         CourseEntity course = factory.manufacturePojo(CourseEntity.class);
         String courseCode = course.getCourseCode();
         try{
@@ -55,7 +52,6 @@ public class CourseServiceTest {
 
     @Test
     void testCreateRepeatedCourse() {
-        // TODO
         CourseEntity firstCourseEntity = factory.manufacturePojo(CourseEntity.class);
         String courseCode = firstCourseEntity.getCourseCode();
 

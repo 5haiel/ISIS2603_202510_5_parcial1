@@ -1,6 +1,8 @@
 package uniandes.dse.examen1.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
@@ -10,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 import jakarta.transaction.Transactional;
@@ -47,33 +50,45 @@ public class RecordServiceTest {
     @Autowired
     CourseRepository courseRepository;
 
+    @Autowired
+    private TestEntityManager entityManager;
+
     private PodamFactory factory = new PodamFactoryImpl();
 
     private String login;
     private String courseCode;
 
-    // @BeforeEach
-    // void setUp() throws RepeatedCourseException, RepeatedStudentException {
-    //     CourseEntity newCourse = factory.manufacturePojo(CourseEntity.class);
-    //     newCourse = courseService.createCourse(newCourse);
-    //     courseCode = newCourse.getCourseCode();
+    @BeforeEach
+    void setUp() throws RepeatedCourseException, RepeatedStudentException {
+        CourseEntity newCourse = factory.manufacturePojo(CourseEntity.class);
+        newCourse = courseService.createCourse(newCourse);
+        courseCode = newCourse.getCourseCode();
 
-    //     StudentEntity newStudent = factory.manufacturePojo(StudentEntity.class);
-    //     newStudent = studentService.createStudent(newStudent);
-    //     login = newStudent.getLogin();
-    // }
+        StudentEntity newStudent = factory.manufacturePojo(StudentEntity.class);
+        newStudent = studentService.createStudent(newStudent);
+        login = newStudent.getLogin();
+    }
 
     /**
      * Tests the normal creation of a record for a student in a course
      */
     @Test
     void testCreateRecord() {
-        // TODO
-        //RecordEntity record = factory.manufacturePojo(RecordEntity.class);
+        Double grade = 4.0;
+        String semester = "2025-10";
 
-        // try{
-        //     RecordEntity storedEntity = recordService.createRecord(login, courseCode, null, courseCode)
-        // } catch (){}
+        try {
+            RecordEntity record = recordService.createRecord(login, courseCode, grade, semester);
+            RecordEntity retrieveRecordEntity = entityManager.find(RecordEntity.class, record.getId());
+            assertNotNull(record);
+            assertNotNull(retrieveRecordEntity);
+            assertEquals(login, retrieveRecordEntity.getStudent().getLogin());
+            assertEquals(courseCode, retrieveRecordEntity.getCourse().getCourseCode());
+            assertEquals(grade, retrieveRecordEntity.getFinalGrade());
+            assertEquals(semester, retrieveRecordEntity.getSemester());
+        } catch (InvalidRecordException e) {
+            fail("No debería lanzarse una excepción");
+        }
     }
 
     /**
@@ -81,7 +96,16 @@ public class RecordServiceTest {
      */
     @Test
     void testCreateRecordMissingStudent() {
-        // TODO
+        Double grade = 3.5;
+        String semester = "2025-10";
+        String invalidLogin = "EstudianteNoExiste123";
+
+        try {
+            recordService.createRecord(invalidLogin, courseCode, grade, semester);
+            fail("Se esperaba una excepción porque el estudiante no existe.");
+        } catch (InvalidRecordException e) {
+            assertEquals("No existe un estudiante con el login: " + invalidLogin, e.getMessage());
+        }
     }
 
     /**
@@ -89,7 +113,16 @@ public class RecordServiceTest {
      */
     @Test
     void testCreateInscripcionMissingCourse() {
-        // TODO
+        Double grade = 3.5;
+        String semester = "2025-10";
+        String invalidCourseCode = "CursoNoExiste123";
+
+        try{
+            recordService.createRecord(login, invalidCourseCode, grade, semester);
+            fail("Se esperaba una excepción porque el curso no existe.");
+        } catch (InvalidRecordException e) {
+            assertEquals("No existe un curso con el codigo: " + invalidCourseCode, e.getMessage());
+        }
     }
 
     /**
@@ -97,7 +130,15 @@ public class RecordServiceTest {
      */
     @Test
     void testCreateInscripcionWrongGrade() {
-        // TODO
+        Double wrongGrade = 5.1;
+        String semester = "2025-10";    
+
+        try{
+            recordService.createRecord(login, courseCode, wrongGrade, semester);
+            fail("Se esperaba una excepción porque la nota no es válida.");
+        } catch (InvalidRecordException e) {
+            assertEquals("La nota debe ser un número entre 1.5 y 5.0", e.getMessage());
+        }
     }
 
     /**
@@ -106,7 +147,22 @@ public class RecordServiceTest {
      */
     @Test
     void testCreateInscripcionRepetida1() {
-        // TODO
+        Double validGrade = 4.0;
+        String semester = "2024-1";
+
+        try {
+            recordService.createRecord(login, courseCode, validGrade, semester);
+        } catch (InvalidRecordException e) {
+            fail("No debería fallar la primera inscripción.");
+        }
+
+        entityManager.clear();
+        try {
+            recordService.createRecord(login, courseCode, 2.0, semester);
+            fail("Se esperaba una excepción porque el estudiante ya aprobó el curso.");
+        } catch (InvalidRecordException e) {
+            assertEquals("El estudiante ya aprobó este curso con la nota: " + validGrade, e.getMessage());
+        }
     }
 
     /**
@@ -115,6 +171,22 @@ public class RecordServiceTest {
      */
     @Test
     void testCreateInscripcionRepetida2() {
-        // TODO
+        Double failedGrade = 2.0;
+        String semester = "2024-1";
+
+        try {
+            recordService.createRecord(login, courseCode, failedGrade, semester);
+        } catch (InvalidRecordException e) {
+            fail("No debería fallar la primera inscripción.");
+        }
+
+        Double newGrade = 3.0;
+        entityManager.clear();
+        try {
+            recordService.createRecord(login, courseCode, newGrade, semester);
+            fail("Se esperaba una excepción porque el estudiante ya tiene una inscripción en el curso.");
+        } catch (InvalidRecordException e) {
+            assertEquals("El estudiante ya está inscrito en este curso", e.getMessage());
+        }
     }
 }

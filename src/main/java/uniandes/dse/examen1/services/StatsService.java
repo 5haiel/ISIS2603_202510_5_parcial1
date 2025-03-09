@@ -37,6 +37,9 @@ public class StatsService {
         int total_courses = 0;
 
         List<RecordEntity> records = student.getRecords();
+        if (records.isEmpty()){
+            return 0.0;
+        }
         for (RecordEntity record : records){
             total_courses+=1;
             acc_grade+=record.getFinalGrade();
@@ -56,16 +59,22 @@ public class StatsService {
         int total_students = 0;
 
         List<StudentEntity> students = course.getStudents();
+        if (students.isEmpty()){
+            return 0.0;
+        }
         for (StudentEntity student : students){
             List<RecordEntity> records = student.getRecords();
             for (RecordEntity record : records){
-                if (record.getCourse().getCourseCode().equals(course.getCourseCode())){
+                if (record.getCourse() == course || record.getCourse().getCourseCode().equals(course.getCourseCode())){
                     total_students+=1;
                     acc_grade+=record.getFinalGrade();
                 }
             }
         }
 
+        if (total_students == 0){
+            return 0.0;
+        }
         Double prom = acc_grade/total_students;
         return prom;
     }
